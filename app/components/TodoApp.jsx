@@ -2,6 +2,7 @@ var React = require('react');
 var axios = require('axios');
 
 var TodoList = require('TodoList');
+var AddTodo = require('AddTodo');
 
 var TodoApp = React.createClass({
   getInitialState: function(){
@@ -28,11 +29,15 @@ var TodoApp = React.createClass({
       console.log('Axios Error:' + error);
     });
   },
+  handleAddTodo: function(text){
+    alert('New todo:', text);
+  },
   render: function(){
     var {todos} = this.state;
     return(
       <div>
         <TodoList todos={todos} />
+        <AddTodo add={this.handleAddTodo}/>
       </div>
     )
   }
