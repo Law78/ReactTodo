@@ -343,3 +343,156 @@ componentWillMount: function(){
 ```
 
 Lo spread operator prendere tutti gli attributi dell'oggeto e li passa. Lo userò per passare l'item Todo da TodoList a Todo.
+
+I componenti saranno:
+
+TodoApp:
+
+```js
+var React = require('react');
+var axios = require('axios');
+
+var TodoList = require('TodoList');
+
+var TodoApp = React.createClass({
+  getInitialState: function(){
+    return {
+      todos: []
+    }
+  },
+  componentWillMount: function(){
+    var request = {
+      method: 'GET',
+      url: '/todos',
+      baseURL: 'http://localhost:4000',
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      timeout: 2000
+    };
+    var self = this;
+    axios.request(request).then(function(res){
+      console.log('Axios Response:');
+      console.log(res.data);
+      self.setState({
+        todos: res.data
+      });
+    }).catch(function(error){
+      console.log('Axios Error:' + error);
+    });
+  },
+  render: function(){
+    var {todos} = this.state;
+    return(
+      <div>
+        <TodoList todos={todos} />
+      </div>
+    )
+  }
+});
+
+module.exports = TodoApp;
+```
+
+che passa (o no) i valori di todos a TodoList, da notare il settaggio del default per un componente functional:
+
+```js
+var React = require('react');
+var Todo = require('Todo');
+
+var TodoList = ({todos}) =>{
+
+  var todo = {}
+  var renderTodos = () => {
+    return todos.map((todo) => {
+      return(
+        <li key={todo.id}><Todo {...todo} /></li>
+      )
+    });
+  }
+  return(
+    <div>
+      <ul>
+        {renderTodos()}
+      </ul>
+    </div>
+  );
+}
+
+TodoList.defaultProps = { todos: [] };
+
+module.exports = TodoList;
+```
+
+ed infine il Todo:
+
+```js
+var React = require('react');
+
+var Todo = (todo) => {
+  var {id, text} = todo;
+  return(
+    <div>
+      <p> <b>{text}</b> (id:{id})</p>
+    </div>
+  )
+}
+
+module.exports = Todo;
+```
+
+### TEST
+
+Creiamo i test in test/components. Non passerò nulla tra i componenti in modo da verificare che comunque vengano renderizzati:
+
+TodoApp.test.jsx:
+
+```js
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
+
+const expect = require('expect');
+
+const TodoApp = require('TodoApp');
+
+describe('TodoApp', () => {
+  it('should exist', () => {
+    const component = TestUtils.renderIntoDocument(<TodoApp />);
+    expect(component).toExist();
+  });
+});
+```
+
+poi TodoList.test.jsx, dove il componente l'ho wrappato in un div in quanto è un functional component:
+
+```js
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
+
+const expect = require('expect');
+
+const TodoList = require('TodoList');
+
+describe('TodoList', () => {
+  it('should exist', () => {
+    const component = TestUtils.renderIntoDocument(<div><TodoList /></div>);
+    expect(component).toExist();
+  });
+});
+```
+
+ed infine Todo.test.jsx, anche questo wrappato nel div in quanto funzionale:
+
+```js
+var React = require('react');
+
+var TestUtils = require('react-addons-test-utils');
+var expect = require('expect');
+
+var Todo = require('Todo');
+
+describe('Todo', () =>{
+  it('should exist', () => {
+    var component = TestUtils.renderIntoDocument(<div><Todo /></div>);
+    expect(component).toExist();
+  });
+});
+```

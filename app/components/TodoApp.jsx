@@ -10,7 +10,6 @@ var TodoApp = React.createClass({
     }
   },
   componentWillMount: function(){
-    console.log('TodoApp will Mount');
     var request = {
       method: 'GET',
       url: '/todos',
