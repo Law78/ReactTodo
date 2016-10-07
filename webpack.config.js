@@ -42,5 +42,5 @@ module.exports = {
     ]
   },
   // Crea il source map per fare debugging
-  devtool: 'cheap-module-eval-source-map'
+  devtool: 'eval-source-map'
 };

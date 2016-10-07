@@ -10,7 +10,24 @@ var TodoApp = React.createClass({
       todos: []
     }
   },
+  renderData: function(){
+    var {todos} = this.state;
+    if(todos.length > 0){
+      return(
+        <div>
+          <TodoList todos={todos} />
+          <AddTodo add={this.handleAddTodo} />
+        </div>
+
+      );
+    } else {
+      return(
+        <p>No Data!</p>
+      )
+    }
+  },
   componentWillMount: function(){
+
     var request = {
       method: 'GET',
       url: '/todos',
@@ -36,9 +53,10 @@ var TodoApp = React.createClass({
     var {todos} = this.state;
     return(
       <div>
-        <TodoList todos={todos} />
-        <AddTodo add={this.handleAddTodo}/>
+          {this.renderData()}
       </div>
+
+
     )
   }
 });
