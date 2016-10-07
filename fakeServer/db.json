@@ -1,0 +1,9 @@
+{
+  "todos": [
+    { "id": 1, "text": "Chiama Tom" },
+    { "id": 2, "text": "Avvia il server web" },
+    { "id": 3, "text": "Vai in palestra" },
+    { "id": 4, "text": "Gioca con il gatto!" },
+    { "id": 5, "text": "Avvisa il poro-Roselli" }
+  ]
+}
