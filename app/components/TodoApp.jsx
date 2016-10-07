@@ -30,7 +30,7 @@ var TodoApp = React.createClass({
     });
   },
   handleAddTodo: function(text){
-    alert('New todo:', text);
+    alert('New todo:' + text);
   },
   render: function(){
     var {todos} = this.state;

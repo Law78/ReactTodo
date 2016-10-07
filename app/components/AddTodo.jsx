@@ -1,15 +1,20 @@
 const React = require('react');
 
 const AddTodo = React.createClass({
-  onButtonClick: function(){
-      console.log('qui')
-      this.props.add
+  onSubmit: function(e){
+    e.preventDefault();
+
+    var text = this.refs.todoText.value;
+    this.refs.todoText.value = '';
+    this.props.add(text);
   },
   render: function(){
     return(
         <div>
-          <input type="text" ref="todoText"/>
-          <button onClick={this.onButtonClick}>Add Todo</button>
+          <form onSubmit={this.onSubmit}>
+            <input type="text" ref="todoText" placeholder="Inserisci Nota"/>
+            <button>Add Todo</button>
+          </form>
         </div>
     );
   }
