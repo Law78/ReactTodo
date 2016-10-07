@@ -4,7 +4,7 @@ const $ = require('jquery');
 const expect = require('expect');
 
 const TodoList = require('TodoList');
-//const Todo = require('Todo');
+const Todo = require('Todo');
 
 describe('TodoList', () => {
   it('should exist', () => {
@@ -26,9 +26,12 @@ describe('TodoList', () => {
     var todoList = TestUtils.renderIntoDocument(<div><TodoList todos={todos} /></div>);
     // Verifico quanti todo component trovo in todoList
     expect(TestUtils.isDOMComponent(todoList)).toBe(true);
-    expect(TestUtils.isCompositeComponent(todoList)).toBe(false);
+    //expect(TestUtils.isCompositeComponent(todoList)).toBe(true);
     //findDOMNode() cannot be used on stateless components: ReactDOM.findDOMNode
     //var todosComponents = TestUtils.scryRenderedDOMComponentsWithTag(todoList, "<div>");
-
+    //var array = TestUtils.scryRenderedDOMComponentsWithTag(todoList, Todo);
+    var elemsCount = $(todoList).find('.TodoItem').length;
+    expect(elemsCount).toBe(2);
+    //expect(todoList).toNotBe(null);
   });
 });

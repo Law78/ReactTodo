@@ -3,7 +3,7 @@ var React = require('react');
 var Todo = (todo) => {
   var {id, text} = todo;
   return(
-    <div>
+    <div className="TodoItem">
       <p> <b>{text}</b> (id:{id})</p>
     </div>
   )
