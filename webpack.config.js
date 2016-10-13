@@ -15,8 +15,13 @@ module.exports = {
     // definisco un oggetto alias, in cui inserisco il path (dalla root) dei miei componenti
     modulesDirectories: [
       'node_modules',
-      './app/components'
+      './app/components',
+      './app/styles'
     ],
+    alias:{
+      applicationStyles: 'app/styles/app.scss',
+      materializeStyles: 'app/styles/sass/materialize.scss'
+    },
     // In questo modo mi evito di specificare l'estensione nei require ;)
     extensions: ['', '.js', '.jsx']
   },
@@ -38,6 +43,10 @@ module.exports = {
         // Eseguo il pre-loader su webpack
         loaders:["style", "css", "sass"],
         test: /\.scss$/
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file?name=../fonts/[name].[ext]'
       }
     ]
   },

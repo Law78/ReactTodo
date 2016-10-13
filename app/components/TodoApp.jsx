@@ -7,7 +7,8 @@ var AddTodo = require('AddTodo');
 var TodoApp = React.createClass({
   getInitialState: function(){
     return {
-      todos: []
+      todos: [],
+      connection: true
     }
   },
   renderData: function(){
@@ -16,13 +17,17 @@ var TodoApp = React.createClass({
       return(
         <div>
           <TodoList todos={todos} />
-          <AddTodo add={this.handleAddTodo} />
+          <AddTodo onAddTodo={this.handleAddTodo} />
         </div>
 
       );
     } else {
       return(
-        <p>No Data!</p>
+        <div>
+          <p>No Data!</p>
+          <AddTodo onAddTodo={this.handleAddTodo} />
+        </div>
+
       )
     }
   },
@@ -43,6 +48,9 @@ var TodoApp = React.createClass({
         todos: res.data
       });
     }).catch(function(error){
+      self.setState({
+        connection: false
+      });
       console.log('Axios Error:' + error);
     });
   },
@@ -50,13 +58,27 @@ var TodoApp = React.createClass({
     alert('New todo:' + text);
   },
   render: function(){
-    var {todos} = this.state;
+    var {todos, connection} = this.state;
+    if (!connection){
+      var noConnection = <p><strong>Nessuna Connessione al Server!</strong></p>;
+    }
     return(
       <div>
-          {this.renderData()}
+        <nav>
+          <div className="nav-wrapper">
+            <a href="#" className="brand-logo">Todo App React</a>
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li><a href="sass.html">Sass</a></li>
+              <li><a href="badges.html">Components</a></li>
+              <li><a href="collapsible.html">JavaScript</a></li>
+            </ul>
+          </div>
+        </nav>
+        <div className="my-app">
+             {this.renderData()}
+             {noConnection}
+         </div>
       </div>
-
-
     )
   }
 });

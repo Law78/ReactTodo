@@ -13,7 +13,7 @@ app.use(function (req, res, next){
 });
 
 app.use(express.static('public'));
-
+app.use('/public/fonts', express.static(__dirname + '/public/fonts'));
 app.listen(PORT, function () {
   console.log('Express server is up on port ' + PORT);
 });
