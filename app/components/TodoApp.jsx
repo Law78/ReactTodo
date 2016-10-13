@@ -3,21 +3,30 @@ var axios = require('axios');
 
 var TodoList = require('TodoList');
 var AddTodo = require('AddTodo');
+var TodoSearch = require('TodoSearch');
 
 var TodoApp = React.createClass({
   getInitialState: function(){
     return {
       todos: [],
+      showCompleted: false,
+      searchText: '',
       connection: true
     }
+  },
+  handleSearchText: function(showCompleted, searchText){
+    this.setState({
+      showCompleted,
+      searchText: searchText.toLowerCase()
+    })
   },
   renderData: function(){
     var {todos} = this.state;
     if(todos.length > 0){
       return(
         <div>
+          <TodoSearch onSearchText={this.handleSearchText} />
           <TodoList todos={todos} />
-          <AddTodo onAddTodo={this.handleAddTodo} />
         </div>
 
       );
@@ -25,7 +34,6 @@ var TodoApp = React.createClass({
       return(
         <div>
           <p>No Data!</p>
-          <AddTodo onAddTodo={this.handleAddTodo} />
         </div>
 
       )
@@ -75,8 +83,9 @@ var TodoApp = React.createClass({
           </div>
         </nav>
         <div className="my-app">
-             {this.renderData()}
-             {noConnection}
+          {this.renderData()}
+          {noConnection}
+          <AddTodo onAddTodo={this.handleAddTodo} />
          </div>
       </div>
     )

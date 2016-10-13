@@ -2,5 +2,10 @@
 
 .my-app {
   padding:10px 100px;
-  text:$grey;
+  color: $greensea;
+}
+
+nav {
+  background-color: $greensea;
+  margin-bottom: 20px;
 }

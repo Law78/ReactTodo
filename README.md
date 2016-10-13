@@ -496,3 +496,6 @@ describe('Todo', () =>{
   });
 });
 ```
+
+Ho inserito il supporto per Materialize CSS includendo in webpack il css di Materialize
+e il requires dell'scss mio e di materialize. Ho dovuto inserire il loader file-loader per le fonts, che mi crea le risorse font statiche direttamente nella public.
