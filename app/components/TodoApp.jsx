@@ -41,11 +41,11 @@ var TodoApp = React.createClass({
     }
   },
   componentWillMount: function(){
-
+    var port2 = process.env.PORT + 1;
     var request = {
       method: 'GET',
       url: '/todos',
-      baseURL: 'http:\\0.0.0.0' + ':' + (process.env.PORT || 4000),
+      baseURL: 'http:\\0.0.0.0' + ':' + (port2 || 4000),
       headers: {'X-Requested-With': 'XMLHttpRequest'},
       timeout: 2000
     };
@@ -74,10 +74,11 @@ var TodoApp = React.createClass({
         }
       ]
     });
+    var port2 = process.env.PORT + 1;
     var request = {
       method: 'POST',
       url: '/todos',
-      baseURL: 'http:\\0.0.0.0' + ':' + (process.env.PORT || 4000),
+      baseURL: 'http:\\0.0.0.0' + ':' + (port2 || 4000),
       headers: {'X-Requested-With': 'XMLHttpRequest'},
       timeout: 2000,
       data: {
