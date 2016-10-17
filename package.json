@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "start": "node server.js",
+    "start": "json-server -p $PORT --watch ./fakeServer/db.json && node server.js",
     "fake": "json-server -p 4000 --watch ./fakeServer/db.json"
   },
   "keywords": [],
