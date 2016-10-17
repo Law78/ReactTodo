@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "start": "json-server -p $PORT --watch ./fakeServer/db.json && node server.js",
+    "start": "node server.js",
     "fake": "json-server -p 4000 --watch ./fakeServer/db.json"
   },
   "keywords": [],
@@ -15,6 +15,7 @@
     "axios": "^0.14.0",
     "babel-preset-stage-0": "^6.16.0",
     "express": "^4.14.0",
+    "json-server": "^0.8.22",
     "node-uuid": "^1.4.7",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
