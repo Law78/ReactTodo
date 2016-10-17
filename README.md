@@ -499,3 +499,65 @@ describe('Todo', () =>{
 
 Ho inserito il supporto per Materialize CSS includendo in webpack il css di Materialize
 e il requires dell'scss mio e di materialize. Ho dovuto inserire il loader file-loader per le fonts, che mi crea le risorse font statiche direttamente nella public.
+
+#AddTodo
+
+Per aggiungere un nuovo todo, vado ad usare un package di NodeJS per generare un Unique ID:
+
+```
+npm install --save node-uuid
+```
+
+e lo vado ad inserire in TodoApp:
+
+```
+var uuid  = require('node-uuid');
+```
+
+In TodoApp vado ad aggiornare lo stato. Il mio todos è un array. Per inserire un nuovo oggetto a questo array userò lo spread operator:
+
+```
+this.setState({
+  todos: [
+    ...this.state.todos, {
+      id: uuid(),
+      text
+    }
+  ]
+});
+```
+
+in cui ho generato anche un ID univoco. Questo è il metodo con il POST al server:
+
+```
+handleAddTodo: function(text){
+  var todoId = uuid();
+  this.setState({
+    todos: [
+      ...this.state.todos, {
+        id: todoId,
+        text
+      }
+    ]
+  });
+  var request = {
+    method: 'POST',
+    url: '/todos',
+    baseURL: 'http://localhost:4000',
+    headers: {'X-Requested-With': 'XMLHttpRequest'},
+    timeout: 2000,
+    data: {
+      id: todoId,
+      text
+    }
+  };
+  var self = this;
+  axios.request(request).then(function(res){
+    console.log('Axios Response:');
+    console.log(res.data);
+
+  }).catch(function(error){
+    console.log('Axios Error:' + error);
+  });
+},
+```

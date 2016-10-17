@@ -1,9 +1,10 @@
 var React = require('react');
 var axios = require('axios');
+var uuid  = require('node-uuid');
 
-var TodoList = require('TodoList');
-var AddTodo = require('AddTodo');
-var TodoSearch = require('TodoSearch');
+var TodoList    = require('TodoList');
+var AddTodo     = require('AddTodo');
+var TodoSearch  = require('TodoSearch');
 
 var TodoApp = React.createClass({
   getInitialState: function(){
@@ -63,7 +64,35 @@ var TodoApp = React.createClass({
     });
   },
   handleAddTodo: function(text){
-    alert('New todo:' + text);
+    //alert('New todo:' + text);
+    var todoId = uuid();
+    this.setState({
+      todos: [
+        ...this.state.todos, {
+          id: todoId,
+          text
+        }
+      ]
+    });
+    var request = {
+      method: 'POST',
+      url: '/todos',
+      baseURL: 'http://localhost:4000',
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      timeout: 2000,
+      data: {
+        id: todoId,
+        text
+      }
+    };
+    var self = this;
+    axios.request(request).then(function(res){
+      console.log('Axios Response:');
+      console.log(res.data);
+
+    }).catch(function(error){
+      console.log('Axios Error:' + error);
+    });
   },
   render: function(){
     var {todos, connection} = this.state;
