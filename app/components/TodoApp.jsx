@@ -78,7 +78,7 @@ var TodoApp = React.createClass({
     var request = {
       method: 'POST',
       url: '/todos',
-      baseURL: 'http://0.0.0.0:4000',
+      baseURL: 'https://0.0.0.0:4000',
       headers: {'X-Requested-With': 'XMLHttpRequest'},
       timeout: 2000,
       data: {
