@@ -6,7 +6,7 @@ var exec = require('child_process').exec;
 
 var port2 = process.env.PORT + 1;
 
-exec("json-server -H 0.0.0.0 -p "+ (port2 || 4000) +" --watch ./fakeServer/db.json",
+exec("json-server -H 0.0.0.0 -p 4000 --watch ./fakeServer/db.json",
   function(error, stdout, stderr){
     if(error){
       console.error('exec error: ' + error);
