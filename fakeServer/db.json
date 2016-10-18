@@ -2,23 +2,8 @@
   "todos": [
     {
       "id": "a257a8eb-b660-41b7-a69b-759b90930a40",
-      "text": "Salutare Roselli"
-    },
-    {
-      "id": "cbdb812a-952f-4cb3-a3a7-3f4eb973c21c",
-      "text": "Chiamare Mariola"
-    },
-    {
-      "id": "8de13909-223b-4b52-b95d-88d1ebdbe6d7",
-      "text": "Fare i Controlli"
-    },
-    {
-      "id": "0e8c71cd-dad8-48c6-ab01-6dc989d869fc",
-      "text": "Non esageriamo"
-    },
-    {
-      "id": "4703ede5-30c5-4b36-a0ce-d5ed0bf51104",
-      "text": "Prendere il caffé"
+      "text": "Salutare Roselli",
+      "completed": true
     }
   ]
 }
