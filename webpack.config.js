@@ -16,11 +16,13 @@ module.exports = {
     modulesDirectories: [
       'node_modules',
       './app/components',
-      './app/styles'
+      './app/styles',
+      './app/api'
     ],
     alias:{
       applicationStyles: 'app/styles/app.scss',
-      materializeStyles: 'app/styles/sass/materialize.scss'
+      materializeStyles: 'app/styles/sass/materialize.scss',
+      config: 'config.js'
     },
     // In questo modo mi evito di specificare l'estensione nei require ;)
     extensions: ['', '.js', '.jsx']

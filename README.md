@@ -564,3 +564,14 @@ handleAddTodo: function(text){
 
 Ho cambiato la procedura di avvio, ora il server fake viene avviato da nodejs.
 Adesso aggiungiamo il check per tenere traccia se una todo è completata o meno.
+
+#LocalStorage
+
+Nella console del browser, scrivendo localStorage. mi appaiono i metodi di questo oggetto che mi serve per scrivere in formato chiave-valore, ciò che voglio memorizzare all'interno dello storage del browser.
+Ad esempio posso scrivere in console:
+
+```
+localStorage.setItem('searchText', 'cat');
+localStorage.getItem('searchText');
+localStorage.removeItem('searchText');
+```

@@ -2,18 +2,24 @@ var React = require('react');
 var axios = require('axios');
 var uuid  = require('node-uuid');
 
+var config = require('config');
+
 var TodoList    = require('TodoList');
 var AddTodo     = require('AddTodo');
 var TodoSearch  = require('TodoSearch');
+var TodoAPI     = require('TodoAPI');
 
 var TodoApp = React.createClass({
   getInitialState: function(){
     return {
-      todos: [],
+      todos: config.db!== 'fake' ? TodoAPI.getTodos() : [],
       showCompleted: false,
       searchText: '',
       connection: true
     }
+  },
+  componentDidUpdate: function(){
+    TodoAPI.setTodos(this.state.todos);
   },
   handleSearchText: function(showCompleted, searchText){
     this.setState({
@@ -41,26 +47,33 @@ var TodoApp = React.createClass({
     }
   },
   componentWillMount: function(){
-    var request = {
-      method: 'GET',
-      url: '/todos',
-      baseURL: 'http://0.0.0.0:4000',
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      timeout: 2000
-    };
-    var self = this;
-    axios.request(request).then(function(res){
-      console.log('Axios Response:');
-      console.log(res.data);
-      self.setState({
-        todos: res.data
+    if(config.db === 'fake'){
+      console.log('DB: ', config.db);
+      var request = {
+        method: 'GET',
+        url: '/todos',
+        baseURL: 'http://0.0.0.0:4000',
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        timeout: 2000
+      };
+      var self = this;
+      axios.request(request).then(function(res){
+        console.log('Axios Response:');
+        console.log(res.data);
+        self.setState({
+          todos: res.data
+        });
+      }).catch(function(error){
+        self.setState({
+          connection: false
+        });
+        console.log('Axios Error:' + error);
       });
-    }).catch(function(error){
-      self.setState({
-        connection: false
-      });
-      console.log('Axios Error:' + error);
-    });
+    } else {
+      console.log('DB: ', config.db);
+    }
+
+
   },
   handleAddTodo: function(text){
     //alert('New todo:' + text);
@@ -74,25 +87,29 @@ var TodoApp = React.createClass({
         }
       ]
     });
-    var request = {
-      method: 'POST',
-      url: '/todos',
-      baseURL: 'http://0.0.0.0:4000',
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      timeout: 2000,
-      data: {
-        id: todoId,
-        text
-      }
-    };
-    var self = this;
-    axios.request(request).then(function(res){
-      console.log('Axios Response:');
-      console.log(res.data);
+    if(config.db === 'fake'){
+      var request = {
+        method: 'POST',
+        url: '/todos',
+        baseURL: 'http://0.0.0.0:4000',
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        timeout: 2000,
+        data: {
+          id: todoId,
+          text
+        }
+      };
+      var self = this;
+      axios.request(request).then(function(res){
+        console.log('Axios Response:');
+        console.log(res.data);
 
-    }).catch(function(error){
-      console.log('Axios Error:' + error);
-    });
+      }).catch(function(error){
+        console.log('Axios Error:' + error);
+      });
+    }
+
+
   },
   handleToggle: function(id){
     var updatedTodos = this.state.todos.map((todo) => {
