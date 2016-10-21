@@ -27,7 +27,7 @@ var TodoApp = React.createClass({
       return(
         <div>
           <TodoSearch onSearchText={this.handleSearchText} />
-          <TodoList todos={todos} />
+          <TodoList todos={todos} onToggle={this.handleToggle}/>
         </div>
 
       );
@@ -69,7 +69,8 @@ var TodoApp = React.createClass({
       todos: [
         ...this.state.todos, {
           id: todoId,
-          text
+          text,
+          completed: false
         }
       ]
     });
@@ -92,6 +93,15 @@ var TodoApp = React.createClass({
     }).catch(function(error){
       console.log('Axios Error:' + error);
     });
+  },
+  handleToggle: function(id){
+    var updatedTodos = this.state.todos.map((todo) => {
+      if(todo.id === id){
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    this.setState({todos: updatedTodos});
   },
   render: function(){
     var {todos, connection} = this.state;

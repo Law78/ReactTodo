@@ -5,7 +5,7 @@ var TestUtils = require('react-addons-test-utils');
 var expect = require('expect');
 // Component require
 var TodoSearch = require('TodoSearch');
-var $ = require('jquery');
+//var $ = require('jquery');
 
 describe('TodoSearch', () =>{
 

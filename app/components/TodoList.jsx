@@ -1,13 +1,13 @@
 var React = require('react');
 var Todo = require('Todo');
 
-var TodoList = ({todos}) =>{
+var TodoList = (props) =>{
 
   var todo = {}
   var renderTodos = () => {
-    return todos.map((todo) => {
+    return props.todos.map((todo) => {
       return(
-        <li key={todo.id}><Todo {...todo} /></li>
+        <li key={todo.id}><Todo todo={todo} onToggle={props.onToggle}/></li>
       )
     });
   }

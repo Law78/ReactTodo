@@ -1,11 +1,17 @@
 var React = require('react');
 
-var Todo = (todo) => {
-  var {id, text} = todo;
+var Todo = (props) => {
+  var {id, text, completed} = props.todo;
   return(
-    <div className="TodoItem">
-      <p> <b>{text}</b> (id:{id})</p>
+    <div className="TodoItem" onClick={() => {
+      props.onToggle(id);
+    }} >
+      <p>
+        <input type="checkbox" checked={completed}/>
+        <label ><b>{text}</b></label>
+      </p>
     </div>
+
   )
 }
 

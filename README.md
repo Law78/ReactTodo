@@ -563,4 +563,4 @@ handleAddTodo: function(text){
 ```
 
 Ho cambiato la procedura di avvio, ora il server fake viene avviato da nodejs.
-Adesso aggiungiamo le tag ai miei todos.
+Adesso aggiungiamo il check per tenere traccia se una todo è completata o meno.
