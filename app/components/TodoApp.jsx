@@ -28,12 +28,13 @@ var TodoApp = React.createClass({
     })
   },
   renderData: function(){
-    var {todos} = this.state;
+    var {todos, showCompleted, searchText} = this.state;
+    var filterTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
     if(todos.length > 0){
       return(
         <div>
           <TodoSearch onSearchText={this.handleSearchText} />
-          <TodoList todos={todos} onToggle={this.handleToggle}/>
+          <TodoList todos={filterTodos} onToggle={this.handleToggle}/>
         </div>
 
       );
@@ -121,7 +122,7 @@ var TodoApp = React.createClass({
     this.setState({todos: updatedTodos});
   },
   render: function(){
-    var {todos, connection} = this.state;
+    var {connection} = this.state;
     if (!connection){
       var noConnection = <p><strong>Nessuna Connessione al Server!</strong></p>;
     }
@@ -131,9 +132,9 @@ var TodoApp = React.createClass({
           <div className="nav-wrapper">
             <a href="#" className="brand-logo">Todo App React</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><a href="sass.html">Sass</a></li>
-              <li><a href="badges.html">Components</a></li>
-              <li><a href="collapsible.html">JavaScript</a></li>
+              <li><a href="#">Menu 1</a></li>
+              <li><a href="#">Menu 2</a></li>
+              <li><a href="#">Menu 3</a></li>
             </ul>
           </div>
         </nav>
