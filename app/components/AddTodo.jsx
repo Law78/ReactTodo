@@ -18,7 +18,7 @@ const AddTodo = React.createClass({
   },
   render: function(){
     return(
-        <div>
+        <div className="container__footer">
           <form onSubmit={this.onSubmit}>
             <input type="text" ref="todoText" placeholder="Inserisci Nota"/>
             <button className="waves-effect waves-light btn"><i className="material-icons left">cloud</i>Add Todo</button>

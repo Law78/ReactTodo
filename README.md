@@ -575,3 +575,13 @@ localStorage.setItem('searchText', 'cat');
 localStorage.getItem('searchText');
 localStorage.removeItem('searchText');
 ```
+
+
+# Sezione Redux
+
+Vado a creare la cartella actions in app e il relativo file actions.jsx e nella cartella test 
+creo actions e il file action.test.jsx
+
+Aggiungo l'alias 'actions' in webpack.config.js
+
+Creiamo l'action generator per la prima action 'setSearchText' e relativo test in actions.test.jsx

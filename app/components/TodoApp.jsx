@@ -32,16 +32,19 @@ var TodoApp = React.createClass({
     var filterTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
     if(todos.length > 0){
       return(
-        <div>
-          <TodoSearch onSearchText={this.handleSearchText} />
-          <TodoList todos={filterTodos} onToggle={this.handleToggle}/>
+        <div className="row">
+          <div className="col s10 offset-s1">
+            <div className="container-todo">
+              <TodoSearch onSearchText={this.handleSearchText} />
+              <TodoList todos={filterTodos} onToggle={this.handleToggle}/>
+            </div>
+          </div>
         </div>
-
       );
     } else {
       return(
         <div>
-          <p>No Data!</p>
+          <p className="container__message">No Data!</p>
         </div>
 
       )
@@ -141,10 +144,17 @@ var TodoApp = React.createClass({
             </ul>
           </div>
         </nav>
+        <div className="page-title">
+          <h1>Todo App</h1>
+        </div>
         <div className="my-app">
-          {this.renderData()}
-          {noConnection}
-          <AddTodo onAddTodo={this.handleAddTodo} />
+          <div className="row">
+            <div className="col s10 offset-s1 ">
+              {this.renderData()}
+              {noConnection}
+              <AddTodo onAddTodo={this.handleAddTodo} />
+            </div>
+          </div>
          </div>
       </div>
     )

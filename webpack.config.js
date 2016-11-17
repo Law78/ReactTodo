@@ -22,6 +22,7 @@ module.exports = {
     alias:{
       applicationStyles: 'app/styles/app.scss',
       materializeStyles: 'app/styles/sass/materialize.scss',
+      actions: 'app/actions/actions.jsx',
       config: 'config.js'
     },
     // In questo modo mi evito di specificare l'estensione nei require ;)
