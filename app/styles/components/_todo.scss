@@ -1,0 +1,23 @@
+.todo {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  padding: 1rem;
+  transition: background .3s ease;
+
+  p{
+    margin: 0;
+
+  }
+}
+
+.todo_subtext {
+  color: #999;
+}
+
+.todo-completed {
+  span, .todo-subtext {
+    color: $light-color;
+    text-decoration: line-through;
+  }
+}
