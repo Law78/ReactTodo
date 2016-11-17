@@ -585,3 +585,85 @@ creo actions e il file action.test.jsx
 Aggiungo l'alias 'actions' in webpack.config.js
 
 Creiamo l'action generator per la prima action 'setSearchText' e relativo test in actions.test.jsx
+
+```
+export var setSearchText = (searchText) => {
+  return {
+    type: 'SET_SEARCH_TEXT',
+    searchText
+  };
+};
+
+export var addTodo = (text) => {
+  return {
+    type: 'ADD_TODO',
+    text
+  };
+};
+
+export var toggleShowCompleted = () => {
+  return {
+    type: 'TOGGLE_SHOW_COMPLETED'
+  };
+};
+
+export var toggleTodo = (id) => {
+  return {
+    type: 'TOGGLE_TODO',
+    id
+  };
+};
+```
+
+Per ora di fatto non abbiamo usato Redux :)
+
+Creiamo la cartella reducers e relativo alias con la cartella ed il file per i test.
+
+```
+export const searchTextReducers = (state = '', action) => {
+  switch(action.type){
+    case 'SET_SEARCH_TEXT':
+      return action.searchText;
+    default:
+      return state;
+  };
+};
+```
+
+Siamo andati a installare deep-freeze-strict per fare il freeze degli oggetti in maniera ricorsiva.
+Usarlo è molto semplice, una volta importato (con import o require) passo l'oggetto da "freezare" a
+deep freeze.
+Prova ad inserire il seguente codice in un reducers e riavvia il test. Avrò un errore in cui l'object is
+not extensible.
+
+```
+const reducers = require('reducers');
+const expect = require('expect');
+const freeze = require('deep-freeze-strict');
+
+describe('Reducers', () => {
+  describe('searchTextReducers', () => {
+    it('should set searchText', () => {
+      const action = {
+        type: 'SET_SEARCH_TEXT',
+        searchText: 'Some Text'
+      },
+        res = reducers.searchTextReducers(freeze(''), freeze(action));
+      expect(res).toEqual(action.searchText);
+    });
+  });
+
+  describe('showCompletedReducers', () => {
+    it('should change show completed flag', () => {
+      const state = false,
+        action = {
+          type: 'TOGGLE_SHOW_COMPLETED'
+        },
+        res = reducers.showCompletedReducers(freeze(state), freeze(action));
+      expect(res).toBe(!state);
+    });
+  });
+
+});
+```
+
