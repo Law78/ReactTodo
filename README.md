@@ -667,3 +667,45 @@ describe('Reducers', () => {
 });
 ```
 
+Iniziamo ora a creare lo store e ad installare redux:
+
+```
+npm install redux redux-logger --save-dev
+```
+
+Creo la cartella store e il file configureStore.jsx:
+
+```
+
+const {applyMiddleware, createStore, combineReducers, compose} = require('redux');
+const {searchTextReducers, showCompletedReducers, todosReducers} = require('reducers');
+const createLogger = require('redux-logger');
+
+export const configure = () => {
+  const reducer = combineReducers({searchText:searchTextReducers,
+    showCompleted: showCompletedReducers,
+    todos: todosReducers
+  });
+  const logger = createLogger();
+  var store = createStore(reducer,
+    compose(window.devToolsExtension ? window.devToolsExtension() : f => f),
+    applyMiddleware(logger));
+  return store;
+};
+```
+
+e in app.jsx avrò:
+
+```
+var actions = require('actions');
+var store = require('configureStore').configure();
+
+store.subscribe(() => {
+  console.log('New State', store.getState());
+});
+
+store.dispatch(actions.addTodo('Clean the yard'));
+store.dispatch(actions.setSearchText('yard'));
+store.dispatch(actions.toggleShowCompleted());
+```
+

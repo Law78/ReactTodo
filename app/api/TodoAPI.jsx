@@ -33,7 +33,7 @@ module.exports = {
 
     filteredTodos = filteredTodos.filter( (todo) => {
       var todoText = todo.text.toLowerCase();
-      console.log(searchText);
+      //console.log(searchText);
       return searchText.length === 0 || todoText.indexOf(searchText) >= 0;
     });
     // Sort todos with non-completed first

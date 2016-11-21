@@ -74,7 +74,7 @@ var TodoApp = React.createClass({
         console.log('Axios Error:' + error);
       });
     } else {
-      console.log('DB: ', config.db);
+      console.log('DB in USE: ', config.db);
     }
 
 

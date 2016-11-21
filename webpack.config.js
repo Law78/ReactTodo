@@ -24,7 +24,8 @@ module.exports = {
       materializeStyles: 'app/styles/sass/materialize.scss',
       actions: 'app/actions/actions.jsx',
       reducers: 'app/reducers/reducers.jsx',
-      config: 'config.js'
+      config: 'config.js',
+      configureStore: 'app/store/configureStore.jsx'
     },
     // In questo modo mi evito di specificare l'estensione nei require ;)
     extensions: ['', '.js', '.jsx']

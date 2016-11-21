@@ -1,6 +1,5 @@
 const uuid = require('node-uuid'),
-      moment = require('moment'),
-      _ = require('lodash');
+      moment = require('moment');
 
 export const searchTextReducers = (state = '', action) => {
   switch(action.type){
