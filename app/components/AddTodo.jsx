@@ -1,16 +1,20 @@
 const React = require('react');
+const {connect} = require('react-redux');
+const actions = require('actions');
 
-const AddTodo = React.createClass({
-  propTypes: {
-    onAddTodo: React.PropTypes.func.isRequired
-
-  },
+export const AddTodo = React.createClass({
+  
   onSubmit: function(e){
     e.preventDefault();
-    if(this.refs.todoText.value.length > 0){
-      var text = this.refs.todoText.value;
+    var {dispatch} = this.props;
+    var todoText = this.refs.todoText.value
+    if(todoText.length > 0){
       this.refs.todoText.value = '';
-      this.props.onAddTodo(text);
+      //this.props.onAddTodo(text);
+      // Il dispatch nello STORE lo faccio dal DISPATCH di firebase
+      //dispatch(actions.addTodo(todoText));
+      dispatch(actions.startAddTodo(todoText));
+      dispatch(actions.addTodoAPI(todoText));
     } else {
       this.refs.todoText.focus();
     }
@@ -28,4 +32,4 @@ const AddTodo = React.createClass({
   }
 })
 
-module.exports = AddTodo;
+export default connect()(AddTodo);

@@ -1,0 +1,16 @@
+{
+  "name": "import-require",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mymodule.js",
+  "scripts": {
+    "scripts": "babel mymodule.js -o ./modulecompiled.js"
+  },
+  "keywords": [],
+  "author": "Lorenzo Franceschini <l.franceschini@gmail.com> (http://www.lorenzofranceschini.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015": "^6.18.0"
+  }
+}

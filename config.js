@@ -1,3 +1,3 @@
 module.exports = {
-  db: process.env.DB || 'localStorage' // Metti fake per il fakeServer
+  db: process.env.DB || 'localStorage' //localStorage' // Metti fake per il fakeServer
 }

@@ -1,13 +1,26 @@
 {
   "todos": [
     {
-      "id": "a257a8eb-b660-41b7-a69b-759b90930a40",
-      "text": "Salutare Roselli",
-      "completed": true
+      "id": "1ebd78e4-2f33-4450-8711-4a393dc81a59",
+      "completed": false,
+      "text": "Fare una corsetta!",
+      "createdAt": 1480406224,
+      "type": "TOGGLE_TODO",
+      "completedAt": "undefined"
     },
     {
-      "id": "b29cf1c5-b715-46e1-9476-1f8491c9c9c6",
-      "text": "Ciao"
+      "id": "b1d28914-8e30-4de3-ab42-c8a81df3d5c2",
+      "completed": false,
+      "text": "Andare a fare la spesa",
+      "createdAt": 1480406229,
+      "completedAt": "undefined"
+    },
+    {
+      "id": "e709a250-54d2-45f8-b424-d82667e44aca",
+      "completed": false,
+      "text": "asd",
+      "createdAt": 1480409151,
+      "completedAt": "undefined"
     }
   ]
 }

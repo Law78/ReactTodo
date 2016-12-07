@@ -21,15 +21,14 @@ export const showCompletedReducers = (state = false, action) => {
 
 export const todosReducers = (state = [], action) => {
   switch(action.type){
+ 
     case 'ADD_TODO':
       return [...state, 
-        {
-          id: uuid(),
-          completed: false,
-          text: action.text,
-          createdAt: moment().unix,
-          completedAt: undefined
-        }
+        action.todo
+      ];
+    case 'ADD_TODOS':
+      return [
+        ...state, ...action.todos
       ];
     case 'TOGGLE_TODO':
       //state.slice()

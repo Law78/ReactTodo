@@ -2,55 +2,59 @@ var React = require('react');
 var axios = require('axios');
 var uuid  = require('node-uuid');
 var moment = require('moment');
-var config = require('config');
+//var config = require('config');
 
-var TodoList    = require('TodoList');
-var AddTodo     = require('AddTodo');
-var TodoSearch  = require('TodoSearch');
+import TodoList from 'TodoList';
+//var AddTodo     = require('AddTodo').default;
+//oppure:
+import AddTodo from 'AddTodo';
+import TodoSearch from 'TodoSearch';
 var TodoAPI     = require('TodoAPI');
 
 var TodoApp = React.createClass({
-  getInitialState: function(){
+  /*getInitialState: function(){
+    console.log('CONFIG', config.db)
     return {
       todos: config.db!== 'fake' ? TodoAPI.getTodos() : [],
       showCompleted: false,
       searchText: '',
       connection: true
     }
-  },
-  componentDidUpdate: function(){
+  },*/
+  /*componentDidUpdate: function(){
     TodoAPI.setTodos(this.state.todos);
-  },
-  handleSearchText: function(showCompleted, searchText){
+  },*/
+  /*handleSearchText: function(showCompleted, searchText){
     this.setState({
       showCompleted,
       searchText: searchText.toLowerCase()
     })
-  },
+  },*/
   renderData: function(){
-    var {todos, showCompleted, searchText} = this.state;
-    var filterTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
-    if(todos.length > 0){
+    //var {todos, showCompleted, searchText} = this.state;
+    //var filterTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
+   // var {todos} = this.props;
+    //if(todos.length > 0){
       return(
         <div className="row">
           <div className="col s10 offset-s1">
             <div className="container-todo">
-              <TodoSearch onSearchText={this.handleSearchText} />
-              <TodoList todos={filterTodos} onToggle={this.handleToggle}/>
+              <TodoSearch  />
+              <TodoList />
             </div>
           </div>
         </div>
       );
-    } else {
+   /* } else {
       return(
         <div>
           <p className="container__message">No Data!</p>
         </div>
 
       )
-    }
+    }*/
   },
-  componentWillMount: function(){
+  /*componentWillMount: function(){
     if(config.db === 'fake'){
       console.log('DB: ', config.db);
       var request = {
@@ -78,8 +82,8 @@ var TodoApp = React.createClass({
     }
 
 
-  },
-  handleAddTodo: function(text){
+  },*/
+  /*handleAddTodo: function(text){
     //alert('New todo:' + text);
     var todoId = uuid();
     this.setState({
@@ -126,12 +130,12 @@ var TodoApp = React.createClass({
       return todo;
     });
     this.setState({todos: updatedTodos});
-  },
+  },*/
   render: function(){
-    var {connection} = this.state;
+    /*var {connection} = this.state;
     if (!connection){
       var noConnection = <p><strong>Nessuna Connessione al Server!</strong></p>;
-    }
+    }*/
     return(
       <div>
         <nav>
@@ -151,8 +155,8 @@ var TodoApp = React.createClass({
           <div className="row">
             <div className="col s10 offset-s1 ">
               {this.renderData()}
-              {noConnection}
-              <AddTodo onAddTodo={this.handleAddTodo} />
+      
+              <AddTodo />
             </div>
           </div>
          </div>

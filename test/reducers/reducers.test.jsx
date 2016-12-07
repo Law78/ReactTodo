@@ -27,13 +27,36 @@ describe('Reducers', () => {
 
   describe('todosReducers', () => {
     it('should add new Todo', () => {
+      const todo = {
+        id: 232,
+        text: 'something',
+        completed: false,
+        completedAt: undefined,
+        createdAt: 300
+      },
+        action = {
+          type: 'ADD_TODO',
+          todo
+        },
+        res = reducers.todosReducers(freeze([]), freeze(action));
+      expect(res.length).toEqual(1);
+      expect(res[0]).toEqual(action.todo);
+    });
+    it('should add new Todos', () => {
+      const todos = [{
+        id: 1111,
+        text: 'something',
+        completed: false,
+        completedAt: undefined,
+        createdAt: 300
+      }];
       const action = {
-        type: 'ADD_TODO',
-        text: 'Some Text',
+        type: 'ADD_TODOS',
+        todos
       },
         res = reducers.todosReducers(freeze([]), freeze(action));
       expect(res.length).toEqual(1);
-      expect(res[0].text).toEqual(action.text);
+      expect(res[0]).toEqual(todos[0]);
     });
     it('should toggle todo', () => {
       const state = [

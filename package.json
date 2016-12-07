@@ -6,7 +6,7 @@
   "scripts": {
     "test": "karma start",
     "start": "node server.js",
-    "fake": "json-server -p 4000 --watch ./fakeServer/db.json"
+    "fake": "json-server -p 4500 --watch ./fakeServer/db.json"
   },
   "keywords": [],
   "author": "Lorenzo Franceschini <l.franceschini@gmail.com> (http://www.lorenzofranceschini.com)",
@@ -15,6 +15,7 @@
     "axios": "^0.14.0",
     "babel-preset-stage-0": "^6.16.0",
     "express": "^4.14.0",
+    "firebase": "^3.6.2",
     "json-server": "^0.8.22",
     "node-uuid": "^1.4.7",
     "react": "^15.3.2",
@@ -44,8 +45,11 @@
     "moment": "^2.15.2",
     "node-sass": "^3.13.0",
     "react-addons-test-utils": "^15.3.2",
+    "react-redux": "^4.4.6",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
+    "redux-mock-store": "^1.2.1",
+    "redux-thunk": "^2.1.0",
     "sass-loader": "^4.0.2",
     "script-loader": "^0.7.0",
     "style-loader": "^0.13.1",

@@ -709,3 +709,274 @@ store.dispatch(actions.setSearchText('yard'));
 store.dispatch(actions.toggleShowCompleted());
 ```
 
+#Lettura 120
+
+Adesso abbiamo i Reducers, le Actions e lo Store. Ora devo fare il refactor dei componenti per agganciarli
+a Redux. Devo installare la libreria react-redux perchè userò il {Provider}:
+
+```
+npm install react-redux --save-dev
+```
+
+Prima di tutto dobbiamo aggiungere il Provider che abilita l'accesso allo store ai componenti a cui voglio
+dare questo accesso, in questo caso a tutti i miei componenti TodoApp:
+
+```
+ReactDOM.render(
+  <Provider store={store}>
+    <TodoApp/>
+  </Provider>,
+  document.getElementById('app')
+);
+```
+
+ovviamente in app.jsx ho fatto la require:
+
+```
+var {Provider} = require('react-redux');
+```
+
+Ora devo impostare i singoli componenti. L'idea è quella di non passare più le callback di handle
+(handleAddTodo, handleToggle e handleSearch) di handle da TodoApp a AddTodo, TodoList e TodoSearch.
+Quindi TodoList non ha più bisogno ne dell'handler ne della props dei todos, pertanto passa da:
+
+```
+<TodoList todos={filterTodos} onToggle={this.handleToggle}/>
+```
+
+a
+
+```
+<TodoList />
+```
+
+Questo fa si che la mia TodoList sia anche più riutilizzabile in quanto risulta un livello di accoppiamento
+in meno rispetto a prima. Devo però cambiare il componente TodoList.
+Devo importare la funzione connect da react-redux che mi permette di connettere il componente allo store.
+Devo esportare il modulo in questa modalità:
+
+```
+module.exports = connect()(TodoList);
+```
+
+In questo caso passo la dispatch in maniera implicita al componente TodoList. Come in questo es.:
+
+```
+module.exports = connect()(Todo);
+```
+
+La funzione connect() ritorna un nuovo componente React, che non altera quello passato. Il nuovo componente wrappa il componente passatto alla connect, con lo stato/actions.
+Mi permette di mappare lo stato alla props del componente e gli action creators per il componente e di includere automaticamente, nelle props, il dispatch.
+Per questo motivo in Todo.jsx mi ritrovo il dispatch nell props a cui faccio il destructuring.
+
+Posso specificare la parte dello stato che mi interessa. Posso prendere anche tutto lo stato ma
+non ha senso:
+
+```
+module.exports = connect(
+  (state) => {
+    return {
+      todos: state.todos
+    };
+  }
+)(TodoList);
+```
+
+Tolgo dal Todo la props onToggle:
+
+```
+<li key={todo.id}><Todo todo={todo} onToggle={props.onToggle}/></li>
+```
+
+diventa:
+
+```
+<li key={todo.id}><Todo todo={todo}/></li>
+```
+
+Ovviamente i miei TEST falliranno perchè cambio il metodo di lavoro dei miei componenti. Ad esempio in Todo non ho più l'onToggle. Inoltre esporto un componente wrappato dalla connect e no più il componente originale:
+```
+module.exports = connect()(Todo);
+```
+
+vado a fare l'export della mia var Todo in modo da usarla nei test, e specifico il default dell'export che sarà il componente wrappato:
+```
+export var Todo = React.createClass({
+  ...
+export default connect()(Todo);
+```
+
+__In questo modo esporto sia il componente "classico", sia il componente wrappato.__
+__Devo cambiare anche il modo di importare il componente__
+
+L'export defaul è l'oggetto che esporto e ottengo semplicemente con il require.
+L'export di una variabile (primitiva/oggetto) la ottengo esplicitando con il destructuring.
+Quello che devo ottenere nei TEST è una funzione che rappresenta il mio componente e non l'oggetto wrappato con tanto di funzione connect.
+Posso fare il require con il default oppure fare l'import.... La base da ricordarsi è: Devo importare il componente React puro? Oppure il componente wrappato con la funzione connect? Per quest'ultimo faro un require senza destructuring (al più scrivo default alla fine, oppure faccio descruturing, oppure uso import).
+
+```
+const {TodoList} = require('TodoList'); // componente REACT Puro come l'ultima import
+const TodoList = require('TodoList'); // Se uso l'export default con la connect ottengo un oggetto che ha la funzione connect e la funzione del componente react, in questo caso non FUNZIONEREBBE, e per farla equivalente alla import TodoList devo usare il .default alla fine:
+const TodoList = require('TodoList').default; // Equivalente alla import che segue
+import TodoList from 'TodoList'; // function Connect(props, context) {...}
+import {TodoList} from 'TodoList'; // componente REACT Puro - Non ho lo STORE! (props, context, updater)
+```
+
+Quindi non lavorano più con le proprietà ma con lo store. Torniamo ai TEST, nello specifico in TodoApp.test.jsx (it('should render TodoList', ()).
+
+
+Attenzione: il mio render è diverso da quello di Andrew. Lui prende sempre TodoList, io invece faccio un controllo se ho dei todos da visualizzare. Pertanto io non riesco a fare il test come lo fa lui. In quanto il mio localStorage tra l'altro, è sempre vuoto in test e quindi non farò mai il render di <TodoList> (questo per il test 'it should render TodoList in TodoApp.test.jsx).
+Il mio test dovrà inserire almeno un todo nel localStorage, per cui sarà: 
+
+```
+ it('should render TodoList', () => {
+    var todos = [{
+        id: 300,
+        text: 'Test setTodos',
+        completed: true
+      }];
+    localStorage.setItem('todos', JSON.stringify(todos));
+    var store = configureStore.configure();
+    var provider = TestUtils.renderIntoDocument(
+      <Provider store={store}>
+        <TodoApp />
+      </Provider>
+    );
+
+    var todoApp = TestUtils.scryRenderedComponentsWithType(provider, TodoApp)[0];
+    
+    var todoList = TestUtils.scryRenderedComponentsWithType(todoApp, TodoList);
+
+
+    expect(todoList.length).toEqual(1);
+  });
+```
+
+Vediamo il test di TodoList.test.jsx:
+
+Siccome il Todo ha bisogno dello STORE, devo importare sia il componente "classico" React con l'Import {}, sia il componente con la Connect() in modo da avere lo store, quindi importo la versione "Connected". Questo è necessario solo per il TEST del File, in quanto ho bisogno di avere l'istanza dello store.
+
+```
+import ConnectedTodoList, {TodoList} from 'TodoList';
+import ConnectedTodo, {Todo} from 'Todo';
+
+const configureStore = require('configureStore');
+```
+
+posso anche fare
+
+```
+import {configure} from 'configureStore';
+```
+
+Devo importare anche il PROVIDER per agganciare lo store:
+
+```
+const {Provider}= require('react-redux');
+```
+
+Creo il riferimento allo store e passo un initialStore (HO MODIFICATO il file del configureStore per accettare un initialStore!!! Pertanto nel configureStore.jsx avrò:
+
+```
+export const configure = (initialState = {}) => {
+```
+
+creo il render con il Provider che fornirà lo store, altrimenti riscontro un problema del tipo:
+
+```
+Invariant Violation: Could not find "store" in either the context or props of "Connect(Todo)". Either wrap the root component in a <Provider>, or explicitly pass "store" as a prop to "Connect(Todo)".
+```
+
+utilizzo scryRenderedComponentsWithType, che ritorna un ARRAY di tutti i componente REACT all'interno di un albero. In questo caso voglio i componenti ConnectedTodoList e ConnectedTodo rispettivamente nel tree Provider e nel tree todoList che ottengo dal primo.
+
+```
+var store = configureStore.configure({
+  todos
+});
+var provider = TestUtils.renderIntoDocument(
+  <Provider store={store}>
+    <ConnectedTodoList />
+  </Provider>
+)
+var todoList = TestUtils.scryRenderedComponentsWithType(provider, ConnectedTodoList)[0];
+var todosComponents = TestUtils.scryRenderedComponentsWithType(todoList, ConnectedTodo);
+
+expect(todosComponents.length).toBe(todos.length);
+```
+
+Però ancora non ho i veri valori dello STORE di Redux.
+
+Cominciamo a modificare l'addTodo.jsx, in cui, tramite destructuring, inseriamo il connect di react-redux e le actions.
+Poi facciamo l'export del componente, per fare i test, e notiamo che il this.props.onAddTodo(todoText) non ci servirà più in quanto sarà possibile effettuare il DISPATCH di una azione:
+
+```
+var {dispatch} = this.props;
+...
+dispatch(actions.addTodo(todoText));
+```
+
+in cui faccio il dispatch del testo inserito.
+
+Ora devo importare AddTodo in TodoApp (anche con il require usando il default finale perchè devo prendere il componente wrappato con la connect):
+
+```
+import AddTodo from 'AddTodo';
+```
+
+e ovviamente nel test AddTodo.test.jsx, ottengo:
+
+```
+Invariant Violation: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object
+```
+
+perchè devo cambiare l'import del componente con (oppure con il destructuring e la require):
+
+```
+import {AddTodo} from 'AddTodo';
+```
+
+nel test devo togliere il riferimento onAddTodo e mettere il dispatch, creare una action con il type ad ADD_TODO ed il testo con il todoText. Ovviamente la expect si aspetta di essere chiamata con l'action.
+
+Vediamo il refactoring del TodoSearch. Mi serve {connect} e le actions generator. Il componente lo esporto con export var TodoSearch. Mentre il componente wrappato dalla connect
+diventa:
+
+```
+export default connect( (state) => {
+  return {
+    showCompleted: state.showCompleted,
+    searchText: state.searchText
+  }
+})(TodoSearch);
+```
+
+Sono andato a specificare cosa mi interessa dello stato, in questo caso lo showCompleted e searchText. Adesso handleSubmit non mi serve più e vado a lavorare direttamente sui due componenti della form, in cui imposto i valori di onChange con una arrow function, che mi effettuano il dispatch:
+
+```
+<div className="container__header">
+  <div>
+    <input type="search" ref="searchText" placeholder="Cerca nei ToDo"
+      value={searchText} onChange={ () =>{
+        var searchText = this.refs.searchText.value;
+        dispatch(actions.setSearchText(searchText));
+      } } />
+  </div>
+  <div>
+    <input type="checkbox" id="showCompleted" ref="showCompleted" checked={showCompleted} onChange={ () => {
+      dispatch(actions.toggleShowCompleted());
+    }}/>
+    <label htmlFor="showCompleted">Visualizzi i task completi</label>
+  </div>
+
+</div>
+```
+
+Adesso devo caricare TodoSearch in TodoApp.
+Inoltre in TodoList la map si basa sui todos che ricevo e non sente gli aggiornamenti del search o della checkbox. Devo prendere TodoAPI e aggiungerlo in TodoList in quanto devo utilizzare la funzione filterTodos. Inoltre l'export della connect deve prendere, altri dati che prendo:
+
+```
+var {todos, showCompleted, searchText} = this.props;
+```
+
+Invece di mappare direttamente i todos, faccio il map di TodoAPI.filterTodos in cui passo i todos, il booleano per visualizzare anche i completi ed il searchText.
+
+Ora manca il LocalStorage a Redux.
